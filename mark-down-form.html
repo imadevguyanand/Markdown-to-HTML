@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mark Down To HTML</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1 class="text-center mb-4">Mark Down to HTML Conversion</h1>
+
+      <div class="row mt-5">
+        <div class="col-sm-5">
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Mark Down</label>
+            <textarea class="form-control" id="markDownContents" rows="30"></textarea>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="d-flex flex-column bd-highlight mb-3">
+            <div class="p-2 bd-highlight">
+              <a href="#" type="button" class="btn btn-info" onclick="makeHtml()">Convert to HTML</a>
+            </div>
+            <div class="p-2 bd-highlight"><button type="button" class="btn btn-danger" onclick="clearTextArea()">Clear</button></div>
+
+            <div class="p-2 bd-highlight"><a href="#" type="button" class="btn btn-primary" onclick="preview()">Preview</a></div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">HTML</label>
+            <textarea class="form-control" id="htmlContents" rows="30" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialog"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="/markDownToHtml.js"></script>
+    <script>
+      $("#dialog").dialog({ modal: true, autoOpen: false })
+    </script>
+  </body>
+</html>
