@@ -11,6 +11,10 @@ const headingHashTable = {
   "######": ["<h6>", "</h6>"],
 }
 
+const test = () => {
+  return 1
+}
+
 /**
  * Converts the Mark Down to HTML
  *
@@ -241,3 +245,5 @@ const getSubStringIdxOfParagraph = (string) => {
   }
   return stringLength
 }
+
+module.exports = recursiveParser

@@ -1,0 +1,22 @@
+{
+  "name": "markdown-to-html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mark-down-to-html.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imadevguyanand/Markdown-to-HTML.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imadevguyanand/Markdown-to-HTML/issues"
+  },
+  "homepage": "https://github.com/imadevguyanand/Markdown-to-HTML#readme",
+  "devDependencies": {
+    "jest": "^29.1.2"
+  }
+}
