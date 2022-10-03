@@ -1,6 +1,6 @@
 /**
  * We store all the headings as a key value pairs in a hashTable for fast retrievel
- * @complexities Time => O(n)
+ * @complexities Time => O(1) | Space => O(n), where n is the number of elements in the hashTable
  */
 const headingHashTable = {
   "#": ["<h1>", "</h1>"],
@@ -9,10 +9,6 @@ const headingHashTable = {
   "####": ["<h4>", "</h4>"],
   "#####": ["<h5>", "</h5>"],
   "######": ["<h6>", "</h6>"],
-}
-
-const test = () => {
-  return 1
 }
 
 /**
@@ -33,7 +29,7 @@ const makeHtml = () => {
  *
  * @param {string} string
  * @return {boolean}
- * @complexites Time => O(1), We are checking if the first word is in our headingHashTable. Look ups in hashTable are always a constant operation
+ * @complexites Time => O(1), We are checking if the first word is in our headingHashTable. Look ups in hashTable are always a constant time operation
  */
 const isHeading = (string) => {
   if (string in headingHashTable) {
@@ -44,7 +40,7 @@ const isHeading = (string) => {
 }
 
 /**
- * Check if the string is a link
+ * Check if the string is a link using regex
  *
  * @param {string} mdContents
  * @return {boolean}
@@ -59,7 +55,7 @@ const isLink = (mdContents) => {
 }
 
 /**
- * Build Link
+ * Build Link using regex
  *
  * @param {string} mdContents
  * @return {string}
