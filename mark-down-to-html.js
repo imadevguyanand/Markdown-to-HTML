@@ -14,40 +14,12 @@ const headingHashTable = {
 /**
  * Converts the Mark Down to HTML
  *
- * @return {html}
+ * @return {void}
  */
 const makeHtml = () => {
   // Fetch the mark down contents using the dom getElementById
   let input = document.getElementById("markDownContents").value
-  let html = ""
-
-  if (!input) {
-    return html
-  }
-
-  let lines = []
-  if (input.includes("\n")) {
-    lines = input.split("\n")
-  } else {
-    lines.push(input)
-  }
-
-  // Loop through every line
-  for (let line of lines) {
-    if (line) {
-      // Split the line by space but excluding the space within the square bracket
-      let words = line.split(/ (?![^[]*\])/)
-      // Check if the first word is a heading
-      const heading = isHeading(words[0])
-      if (heading) {
-        // Build the heading
-        html += buildHeading(words)
-      } else {
-        // Build the paragraph
-        html += buildParagraph(words)
-      }
-    }
-  }
+  const html = recursiveParser(input, "")
   // Append the output
   document.getElementById("htmlContents").innerHTML = html
 }
@@ -160,4 +132,112 @@ const clearTextArea = () => {
 const preview = () => {
   $("#dialog").html($("#htmlContents").val())
   $("#dialog").dialog("open")
+}
+
+/**
+ * Recursive function to parse the input
+ *
+ * @param {string} input
+ * @param {html} html
+ *
+ * @return {html}
+ */
+const recursiveParser = (input, html) => {
+  // Base Case - If the input length is 0 or less
+  input = input.trim()
+  if (input.length <= 0) {
+    return html
+  }
+
+  // If it contains atleast one new line
+  if (input.includes("\n")) {
+    let data = input.split("\n")
+    let words = data[0].split(" ")
+    const heading = isHeading(words[0])
+    if (heading) {
+      const headingIdx = getSubStringIdxOfHeading(input)
+      const [startIdx, endIdx] = headingIdx
+      let line = input.slice(0, endIdx)
+      // Split the string by space excluding the space within the square brackets
+      line = line.split(/ (?![^[]*\])/)
+      html += buildHeading(line)
+      // New input after slicing the heading
+      let newInput = input.slice(startIdx, input.length)
+      return recursiveParser(newInput, html)
+    } else {
+      const paragraphIdx = getSubStringIdxOfParagraph(input)
+      let line = input.slice(0, paragraphIdx)
+      // Replace all the new lines with space
+      line = line.replace(/\n/g, " ")
+      // Split the string by space excluding the space within the square brackets
+      line = line.split(/ (?![^[]*\])/)
+      html += buildParagraph(line)
+      // New input after slicing the paragraph
+      let newInput = input.slice(paragraphIdx + 1, input.length)
+      return recursiveParser(newInput, html)
+    }
+  }
+  // input is just a single line without any new lines
+  else {
+    // Split by space excluding the space within the square brackets
+    let words = input.split(/ (?![^[]*\])/)
+    let firstWord = words[0]
+    const heading = isHeading(firstWord)
+    if (heading) {
+      html += buildHeading(words)
+      return recursiveParser("", html)
+    } else {
+      html += buildParagraph(words)
+      return recursiveParser("", html)
+    }
+  }
+}
+
+/**
+ * Get the end and start of the new heading idx
+ *
+ * @param {string} string
+ * @return {array}
+ */
+const getSubStringIdxOfHeading = (string) => {
+  const stringLength = string.length
+  let idx = 0
+  let startIdx = 0
+  let character = string[idx]
+  while (character !== "\n" && idx < stringLength) {
+    idx++
+    character = string[idx]
+  }
+
+  startIdx = idx
+
+  while (character === "\n" && idx < stringLength) {
+    idx++
+    character = string[idx]
+  }
+
+  return [idx, startIdx]
+}
+
+/**
+ * Get the end of the paragraph sub string idx ending with atleast 2 consecutive new lines
+ *
+ * @param {string} string
+ * @return {integer}
+ */
+const getSubStringIdxOfParagraph = (string) => {
+  const stringLength = string.length
+  let count = 0
+  for (let idx = 0; idx < stringLength; idx++) {
+    let character = string[idx]
+    if (character === "\n") {
+      count++
+      if (count === 2) {
+        return idx
+      }
+    } else {
+      count = 0
+    }
+  }
+  return stringLength
 }
