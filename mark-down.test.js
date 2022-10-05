@@ -77,16 +77,12 @@ test("Paragraph and link and Paragraph and Link", () => {
 })
 
 const testString2 = `# Header one
-
 Hello there
 
 How are you?
 What's going on?
-
 ## Another Header
-
 This is a paragraph [with an inline link](http://google.com) Neat, eh?
-
 ## This is a header [with a link](http://yahoo.com)`
 
 const output2 = `<h1>Header one</h1>
@@ -99,4 +95,16 @@ const output2 = `<h1>Header one</h1>
 // Header and Paragraph and Paragraph and Header and Paragraph and Header
 test("Paragraph and link and Paragraph and Link", () => {
   expect(recursiveParser(testString2, "")).toContain(output2)
+})
+
+const testString3 = `Paragraph 1 Paragraph 2 inline
+Paragraph 3
+# Heading`
+
+const output3 = `<p>Paragraph 1 Paragraph 2 inline Paragraph 3</p>
+<h1>Heading</h1>`
+
+// Paragraph and Header Combo
+test("Paragraph and Header Combo", () => {
+  expect(recursiveParser(testString3, "")).toContain(output3)
 })

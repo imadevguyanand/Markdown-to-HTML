@@ -1,6 +1,6 @@
 /**
  * We store all the headings as a key value pairs in a hashTable for fast retrievel
- * @complexities Time => O(1) | Space => O(n), where n is the number of elements in the hashTable
+ * @complexities Time => O(1) | Space => O(1)
  */
 const headingHashTable = {
   "#": ["<h1>", "</h1>"],
@@ -32,6 +32,7 @@ const makeHtml = () => {
  * @complexites Time => O(1), We are checking if the first word is in our headingHashTable. Look ups in hashTable are always a constant time operation
  */
 const isHeading = (string) => {
+  string = string.trim()
   if (string in headingHashTable) {
     return true
   } else {
@@ -141,6 +142,7 @@ const preview = () => {
  * @param {html} html
  *
  * @return {html}
+ * @complexities Time => O(n) | Space => O(n), where n is the length of the input string
  */
 const recursiveParser = (input, html) => {
   // Base Case - If the input length is 0 or less
@@ -194,7 +196,7 @@ const recursiveParser = (input, html) => {
 }
 
 /**
- * Get the end and start of the new heading idx
+ * Get the end of the first heading idx and start of the new heading idx
  *
  * @param {string} string
  * @return {array}
@@ -220,7 +222,8 @@ const getSubStringIdxOfHeading = (string) => {
 }
 
 /**
- * Get the end of the paragraph sub string idx ending with atleast 2 consecutive new lines
+ * Get the end of the paragraph idx ending with atleast
+ * 2 consecutive new lines or a heading after a single new line
  *
  * @param {string} string
  * @return {integer}
@@ -228,10 +231,19 @@ const getSubStringIdxOfHeading = (string) => {
 const getSubStringIdxOfParagraph = (string) => {
   const stringLength = string.length
   let count = 0
+  let newLineCount = 0
   for (let idx = 0; idx < stringLength; idx++) {
     let character = string[idx]
+    // Handle the edge case of seeing a header right after a single new line
     if (character === "\n") {
+      newLineCount++
       count++
+      let data = string.split("\n")
+      let words = data[newLineCount].trim().split(" ")
+      const heading = isHeading(words[0])
+      if (heading) {
+        return idx
+      }
       if (count === 2) {
         return idx
       }
